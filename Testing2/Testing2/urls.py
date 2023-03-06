@@ -14,8 +14,23 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
+
+# Làm như vậy thì từ 1 project nhỏ sẽ trở nên rất to, rối nhìn
+# Chính vì thế, ta tách thành cái 'APPs' nhỏ
+# như ở bên testing1 mà ta đã làm !!!
+
+# def home(request):
+#     return HttpResponse('Home Page')
+
+# def room(request):
+#     return HttpResponse('Room Page')
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    
+    # path('', home),
+    # path('room/', room),
+
+    path('', include('base.urls')),
 ]
