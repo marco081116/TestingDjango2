@@ -1,6 +1,9 @@
 from django.shortcuts import render, redirect
-from django.http import HttpResponse
-from .models import Room
+from django.db.models import Q  # Q look up allows us to and or while searching
+from django.contrib import messages # ném message cho user
+from django.contrib.auth.models import User # bộ library của django để đăng nhập user
+from django.contrib.auth import authenticate, login, logout # bộ library để login
+from .models import Room, Topic
 from .forms import RoomForm
 
 
@@ -12,9 +15,40 @@ from .forms import RoomForm
 #     {'id': 3, 'name': 'Frontend DEV !!!'},
 # ]
 
+def loginPage(request):
+    if request.method == 'POST':
+        username = request.POST.get('Username')
+        password = request.POST.get('Password')
+        try:
+            user = User.objects.get(username= username)
+        except:
+            messages.error(request, 'User does not exist !')
+
+        user = authenticate(request, username= username, password= password)
+
+        if user is not None:
+            login(request, user)
+            return redirect('home')
+        else:
+            messages.error(request, 'Username or password does not correct !')
+
+    context = {}
+
+    return render(request, 'base/login_register.html', context)
+
 def home(request):
-    rooms = Room.objects.all() # override the 'room' value
-    context = {'rooms': rooms}
+    q = request.GET.get('q') if request.GET.get('q') != None else '' # chứa cái tên topics để ném vào
+
+    rooms = Room.objects.filter(
+        Q(topic__name__icontains = q) |
+        Q(name__icontains = q) |
+        Q(description__icontains = q)
+    ) # override the 'room' value
+
+    topics = Topic.objects.all()
+    room_count= rooms.count() 
+
+    context = {'rooms': rooms, 'topics': topics, 'room_count': room_count}
     return render(request, 'base/home.html', context)
 
 def room(request, pk):

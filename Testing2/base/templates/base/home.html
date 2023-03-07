@@ -1,16 +1,37 @@
 {% extends 'main.html' %}
 
 {% block content %}
+<!--style này để tách cáo home-container ra thành 2 phần-->
+<style> 
+    .home-container{
+        display: grid;
+        grid-template-columns: 1fr 3fr;
+    }
+</style>
+
 
 <h1>Home template</h1>
 
 
-<div>
+<div class="home-container"> 
+    <div>
+        <h3>Browse Topics</h3>
+        <hr>
+            
+        <div>
+            <a href="{% url 'home' %}">All</a>
+        </div>
 
-    <a href= "{% url 'create-room' %}">Create Room</a>
-    <hr>
+        {% for topic in topics %}
+            <div>
+                <a href="{% url 'home' %}?q={{topic.name}}">{{topic.name}}</a>
+            </div>
+        {% endfor %}
+    </div>
 
     <div>
+        <h5>{{room_count}} rooms available</h5>
+        <a href= "{% url 'create-room' %}">Create Room</a>
         {% for room in rooms %}
             <div>
                 <a href="{% url 'update-room' room.id %}">Edit</a>
@@ -26,6 +47,5 @@
         {% endfor %}
     </div>
 </div>
-
 
 {% endblock content %}
