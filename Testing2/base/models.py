@@ -20,6 +20,9 @@ class Room(models.Model): # Từ Room viết hoa chữ R như trong class code t
     updated = models.DateTimeField(auto_now= True) # auto now -> takes a snapshot on every time we save item(s)
     created = models.DateTimeField(auto_now_add= True) # created -> takes a stamp when we first create item
 
+    class Meta:
+        ordering = ['-updated', '-created'] # bỏ thêm dấu - để lên đầu, ko thì ở chót
+
     def __str__(self):
         return self.name 
 
