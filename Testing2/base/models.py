@@ -16,7 +16,7 @@ class Room(models.Model): # Từ Room viết hoa chữ R như trong class code t
     topic = models.ForeignKey(Topic, on_delete= models.SET_NULL, null= True)
     name = models.CharField(max_length= 200)
     description = models.TextField(null= True, blank= True)
-    # participants = # đang ở trong trang web
+    participants = models.ManyToManyField(User, related_name= 'participants', blank= True) # đang ở trong trang web, sử dụng mối quan hệ many to many
     updated = models.DateTimeField(auto_now= True) # auto now -> takes a snapshot on every time we save item(s)
     created = models.DateTimeField(auto_now_add= True) # created -> takes a stamp when we first create item
 
