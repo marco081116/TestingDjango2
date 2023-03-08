@@ -36,6 +36,10 @@ def loginPage(request):
 
     return render(request, 'base/login_register.html', context)
 
+def logoutUser(request):
+    logout(request)
+    return redirect('home')
+
 def home(request):
     q = request.GET.get('q') if request.GET.get('q') != None else '' # chứa cái tên topics để ném vào
 
