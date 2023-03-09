@@ -33,5 +33,8 @@ class Message(models.Model):
     updated = models.DateTimeField(auto_now= True) # auto now -> takes a snapshot on every time we save item(s)
     created = models.DateTimeField(auto_now_add= True) # created -> takes a stamp when we first create item
 
+    class Meta:
+        ordering = ['-updated', '-created']
+
     def __str__(self):
         return self.body[0:50]

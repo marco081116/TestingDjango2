@@ -74,9 +74,12 @@ def home(request):
     ) # override the 'room' value
 
     topics = Topic.objects.all()
-    room_count= rooms.count() 
+    room_count = rooms.count() 
 
-    context = {'rooms': rooms, 'topics': topics, 'room_count': room_count}
+    # room_messages = Message.objects.all() -> phần code đầu, xuất hiện mọi tin nhắn trong room
+    room_messages = Message.objects.filter(Q(room__topic__name__icontains= q)) # Q look up cho room
+    context = {'rooms': rooms, 'topics': topics, 'room_count': room_count,
+                    'room_messages': room_messages}
     return render(request, 'base/home.html', context)
 
 def room(request, pk):
@@ -86,7 +89,8 @@ def room(request, pk):
     #     if i['id'] == int(pk):
     #         room = i
     room = Room.objects.get(id= pk)
-    room_messages = room.message_set.all().order_by('-created') # get the set of messages that are related to this specific room
+    room_messages = room.message_set.all()#.order_by('-created') -> tới phần activity feed thì cho nguyên đống message tự sort
+    # get the set of messages that are related to this specific room
 
     participants = room.participants.all()
 
