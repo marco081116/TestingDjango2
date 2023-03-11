@@ -59,7 +59,7 @@ TEMPLATES = [
         'DIRS': [
             # new folder for templates
             # Ở Testing1, templates đặt ở trong folder luôn
-            BASE_DIR / 'templates'
+            BASE_DIR / 'templates' # cho biết địa chỉ của cái templates
         ],
         'APP_DIRS': True,
         'OPTIONS': {
@@ -122,6 +122,12 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
 STATIC_URL = 'static/'
+
+STATICFILES_DIRS = [
+    BASE_DIR / 'static', # cho biết địa chỉ của những files static mới tạo ở folder mới !!!
+] 
+
+# STATIC_ROOT =
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
