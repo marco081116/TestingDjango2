@@ -190,3 +190,7 @@ def deleteMessage(request, pk):
         message.delete()
         return redirect('home') # chuyen ve home (nhu o create room)
     return render(request, 'base/delete.html', {'obj': message})
+
+@login_required(login_url= 'login')
+def updateUser(request):
+    return(request, 'base/update-user.html')
