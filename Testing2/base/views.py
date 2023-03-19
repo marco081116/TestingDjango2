@@ -73,7 +73,7 @@ def home(request):
         Q(description__icontains = q)
     ) # override the 'room' value
 
-    topics = Topic.objects.all()
+    topics = Topic.objects.all()[0:4]
     room_count = rooms.count() 
 
     # room_messages = Message.objects.all() -> phần code đầu, xuất hiện mọi tin nhắn trong room
@@ -203,3 +203,12 @@ def updateUser(request):
             return redirect('user-profile', pk = user.id)
 
     return render(request, 'base/update_user.html', {'form': form})
+
+def topicsPage(request):
+    q = request.GET.get('q') if request.GET.get('q') != None else '' # q look up method (bên trên home đã có)
+    topics = Topic.objects.filter(name__icontains= q)
+    return render(request, 'base/topics.html', {'topics': topics})
+
+def activityPage(request):
+    room_messages = Message.objects.all()
+    return render(request, 'base/activity.html', {'room_messages': room_messages})
