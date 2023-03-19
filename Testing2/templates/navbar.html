@@ -23,7 +23,7 @@
         <!-- Logged In -->
 
         <div class="header__user">
-        <a href="profile.html">
+        <a href="{% url 'user-profile' user.id %}">
             <div class="avatar avatar--medium active">
                 <img src="{% static 'images/avatar.svg' %}" />
             </div>
