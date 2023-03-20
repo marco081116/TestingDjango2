@@ -33,4 +33,7 @@ urlpatterns = [
     # path('room/', room),
 
     path('', include('base.urls')),
+
+    # Đây là prefixed api (bên base)
+    path('api/', include('base.api.urls'))
 ]
