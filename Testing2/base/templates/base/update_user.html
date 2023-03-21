@@ -23,7 +23,8 @@
             </div>
 
             <div class="layout__body">
-                <form class="form" action="" method="POST">
+                <form class="form" action="" method="POST" enctype="multipart/form-data">
+                    <!-- cái enctype="multipart/form-data" cho biết ta sẽ submit luôn cả cái file ko chỉ phải là content -->
                     {% csrf_token %}
 
                     {% for field in form %}

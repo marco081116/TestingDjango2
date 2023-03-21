@@ -16,6 +16,9 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 
+from django.conf import settings
+from django.conf.urls.static import static
+
 # Làm như vậy thì từ 1 project nhỏ sẽ trở nên rất to, rối nhìn
 # Chính vì thế, ta tách thành cái 'APPs' nhỏ
 # như ở bên testing1 mà ta đã làm !!!
@@ -37,3 +40,5 @@ urlpatterns = [
     # Đây là prefixed api (bên base)
     path('api/', include('base.api.urls'))
 ]
+
+urlpatterns += static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)

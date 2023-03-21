@@ -3,11 +3,11 @@ from django.http import HttpResponse # xài cho update restriction
 from django.db.models import Q  # Q look up allows us to and or while searching
 from django.contrib import messages # ném message cho user
 from django.contrib.auth.decorators import login_required # decorater ti
-from django.contrib.auth.models import User # bộ library của django để đăng nhập user
+# from django.contrib.auth.models import User # bộ library của django để đăng nhập user -> khúc cuối không cần nữa đổi thành bên models 
 from django.contrib.auth import authenticate, login, logout # bộ library để login
-from django.contrib.auth.forms import UserCreationForm # bộ library để tạo rgister form
-from .models import Room, Topic, Message
-from .forms import RoomForm, UserForm # thêm cái userform là cho update user
+# from django.contrib.auth.forms import UserCreationForm # bộ library để tạo rgister form -> không cấn nữa, vì đã làm cái mới
+from .models import Room, Topic, Message, User # thêm thằng user ở bên trong models
+from .forms import RoomForm, UserForm, MyUserCreationForm # thêm cái userform là cho update user -> Đã thêm 1 cái creationform ko cần cái cũ nữa
 
 
 # Create your views here.
@@ -24,14 +24,14 @@ def loginPage(request):
         return redirect('home')
 
     if request.method == 'POST':
-        username = request.POST.get('Username')
+        email = request.POST.get('email')
         password = request.POST.get('Password')
         try:
-            user = User.objects.get(username= username)
+            user = User.objects.get(email= email)
         except:
             messages.error(request, 'User does not exist !')
 
-        user = authenticate(request, username= username, password= password)
+        user = authenticate(request, email= email, password= password)
 
         if user is not None:
             login(request, user)
@@ -49,11 +49,13 @@ def logoutUser(request):
 
 def registerPage(request):
     # page = 'register' # dont need any more due to the form
-    form = UserCreationForm()
+    # form = UserCreationForm()
+    form = MyUserCreationForm() # cái mới
     context = {'form': form}
 
     if request.method == 'POST':
-        form = UserCreationForm(request.POST)
+        # form = UserCreationForm(request.POST)
+        form = MyUserCreationForm(request.POST) # cái mới
         if form.is_valid():
             user = form.save(commit = False) # take this form and freezing it in time
             user.username = user.username.lower() # we can be able to 'claen' the account
@@ -197,7 +199,7 @@ def updateUser(request):
     form = UserForm(instance= user)
     
     if request.method == 'POST':
-        form = UserForm(request.POST, instance= user)
+        form = UserForm(request.POST, request.FILES, instance= user)
         if form.is_valid():
             form.save()
             return redirect('user-profile', pk = user.id)
